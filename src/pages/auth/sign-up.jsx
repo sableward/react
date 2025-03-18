@@ -1,9 +1,4 @@
-import {
-  Card,
-  Input,
-  Button,
-  Typography,
-} from "@material-tailwind/react";
+import { Card, Input, Button, Typography } from "@material-tailwind/react";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { registerUser } from "../../api";
@@ -15,8 +10,9 @@ export function SignUp() {
     LastName: "",
     Email: "",
     Password: "",
-    Type: 0, // Default user type (make sure this is correct)
-    Image: null, // Image file
+    ConfirmPassword: "", // 🔹 Added password confirmation
+    Type: 0, // Default user type
+    Image: null, // Profile image file
   });
 
   const [error, setError] = useState(null);
@@ -37,21 +33,29 @@ export function SignUp() {
     e.preventDefault();
     setError(null);
 
-    // Create FormData to send as multipart/form-data
+    // 🔹 Basic validation
+    if (!formData.FirstName || !formData.LastName || !formData.Email || !formData.Password || !formData.ConfirmPassword) {
+      setError("All fields are required.");
+      return;
+    }
+
+    if (formData.Password !== formData.ConfirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
+    // Prepare FormData for API request
     const formDataToSend = new FormData();
     formDataToSend.append("FirstName", formData.FirstName);
     formDataToSend.append("MiddleName", formData.MiddleName);
     formDataToSend.append("LastName", formData.LastName);
     formDataToSend.append("Email", formData.Email);
     formDataToSend.append("Password", formData.Password);
-    formDataToSend.append("Type", formData.Type); // Ensure this is an integer
+    formDataToSend.append("Type", formData.Type);
 
-    // Append file if selected
     if (formData.Image) {
       formDataToSend.append("Image", formData.Image);
     }
-
-    console.log("Submitting Form Data:", formDataToSend); // Debugging
 
     try {
       await registerUser(formDataToSend);
@@ -78,18 +82,20 @@ export function SignUp() {
               { name: "FirstName", label: "First Name" },
               { name: "MiddleName", label: "Middle Name" },
               { name: "LastName", label: "Last Name" },
-              { name: "Email", label: "Email Address" },
-              { name: "Password", label: "Password" }
+              { name: "Email", label: "Email Address", type: "email" },
+              { name: "Password", label: "Password", type: "password" },
+              { name: "ConfirmPassword", label: "Confirm Password", type: "password" }
             ].map((field, index) => (
               <Input
                 key={index}
                 size="lg"
                 label={field.label}
                 name={field.name}
-                type={field.name === "Password" ? "password" : "text"}
+                type={field.type || "text"}
                 value={formData[field.name]}
                 onChange={handleChange}
                 className="border-t-blue-gray-200 focus:border-t-gray-900"
+                required
               />
             ))}
 
