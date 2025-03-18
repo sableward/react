@@ -11,16 +11,17 @@ const api = axios.create({
   },
 });
 
-// Login function (Fixed: Uses axios instead of fetch)
-export const loginUser = async ({ Email, Password }) => {
+// Login function
+export const loginUser = async ({ email, password }) => {
   try {
-      const response = await axios.post("https://localhost:7056/api/Auth/Login", { Email, Password });
-      return response.data;
+    const response = await api.post("/Auth/Login", { email, password });
+    return response.data;
   } catch (error) {
-      console.error("Login error:", error.response?.data || error.message);
-      throw error;
+    console.error("Login error:", error.response?.data || error.message);
+    throw error;
   }
 };
+
 // Register function
 export const registerUser = async (formDataToSend) => {
   try {

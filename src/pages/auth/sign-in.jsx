@@ -30,7 +30,7 @@ export function SignIn() {
       console.log("Submitting form:", formData); // 🔹 Debugging
       const response = await loginUser(formData); // Call API
       localStorage.setItem("token", response.token); // Store JWT token
-      navigate("/dashboard"); // Redirect after successful login
+      navigate("/dashboard/home"); // Redirect after successful login
     } catch (error) {
       console.error("Login Error:", error.response?.data || error.message);
       setError(error.response?.data?.message || "Invalid email or password.");
