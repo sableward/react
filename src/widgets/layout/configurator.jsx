@@ -75,7 +75,7 @@ export function Configurator() {
             Dashboard Configurator
           </Typography>
           <Typography className="font-normal text-blue-gray-600">
-            See our dashboard options.
+   
           </Typography>
         </div>
         <IconButton
@@ -108,9 +108,6 @@ export function Configurator() {
         <div className="mb-12">
           <Typography variant="h6" color="blue-gray">
             Sidenav Types
-          </Typography>
-          <Typography variant="small" color="gray">
-            Choose between 3 different sidenav types.
           </Typography>
           <div className="mt-3 flex items-center gap-2">
             <Button
